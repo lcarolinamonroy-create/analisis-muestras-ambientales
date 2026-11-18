@@ -1,5 +1,3 @@
-# analisis-muestras-ambientales
-
 # Evaluación del cumplimiento ambiental de una PTAR en una empresa láctea
 
 ## Descripción del proyecto
