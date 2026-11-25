@@ -8,6 +8,12 @@ El objetivo es revisar el cumplimiento de parámetros de referencia para el vert
 
 Los datos utilizados son simulados y tienen fines educativos.
 
+## Ejecución del proyecto
+
+1. Importar `datos_muestras.csv` en SQLite con el nombre `datos_muestras`.
+2. Ejecutar el archivo `setup.sql`.
+3. Ejecutar las consultas del archivo `consultas.sql`.
+
 ## Parámetros analizados
 
 - pH
