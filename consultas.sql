@@ -100,3 +100,50 @@ WHERE punto_muestreo = 'Salida_PTAR'
   AND estado = 'No_cumple'
 GROUP BY parametro
 ORDER BY cantidad_incumplimientos DESC;
+
+-- 9. Unir resultados de laboratorio con limites normativos
+
+SELECT
+    m.id_muestra,
+    m.punto_muestreo,
+    m.parametro,
+    m.resultado,
+    m.unidad,
+    n.limite_minimo,
+    n.limite_maximo,
+    n.referencia
+FROM datos_muestras AS m
+INNER JOIN parametros_normativos AS n
+    ON m.parametro = n.parametro
+WHERE m.punto_muestreo = 'Salida_PTAR'
+ORDER BY m.id_muestra, m.parametro;
+
+
+-- 10. Validar el estado original frente al estado calculado
+
+WITH evaluacion AS (
+    SELECT
+        m.id_muestra,
+        m.parametro,
+        m.estado AS estado_original,
+        CASE
+            WHEN m.resultado BETWEEN n.limite_minimo AND n.limite_maximo
+                THEN 'Cumple'
+            ELSE 'No_cumple'
+        END AS estado_calculado
+    FROM datos_muestras AS m
+    INNER JOIN parametros_normativos AS n
+        ON m.parametro = n.parametro
+    WHERE m.punto_muestreo = 'Salida_PTAR'
+)
+SELECT
+    id_muestra,
+    parametro,
+    estado_original,
+    estado_calculado,
+    CASE
+        WHEN estado_original = estado_calculado
+            THEN 'Consistente'
+        ELSE 'Revisar'
+    END AS validacion
+FROM evaluacion;
